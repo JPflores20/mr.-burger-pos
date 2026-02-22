@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback } from "react";
+import { createContext, useContext, useReducer, useCallback, type ReactNode } from "react";
 import type { CustomizationOption } from "@/data/menu";
 
 export interface CartItem {
@@ -58,7 +58,7 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
 
   const addItem = useCallback((item: CartItem) => dispatch({ type: "ADD_ITEM", payload: item }), []);
