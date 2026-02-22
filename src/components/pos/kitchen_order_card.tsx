@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, CheckCircle2 } from "lucide-react";
-import type { Order } from "@/context/orders_context";
+import type { Order } from "@/context/orders_types";
 
 interface Props {
   order: Order;

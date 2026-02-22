@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import type { Order } from '@/context/orders_context';
+import type { Order } from '@/context/orders_types';
 import { ReceiptItemsTable } from './receipt_items_table';
 
 interface Props {
