@@ -1,73 +1,55 @@
-# Welcome to your Lovable project
+# Mr. Burger - Punto de Venta (POS)
 
-## Project info
+**URL del Proyecto:** [https://mrburguer-c5f7d.web.app](https://mrburguer-c5f7d.web.app)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Sistema de Punto de Venta moderno y eficiente diseñado específicamente para **Mr. Burger**. Esta aplicación facilita la gestión de pedidos, la coordinación entre caja y cocina, y el seguimiento administrativo.
 
-## How can I edit this code?
+## 🚀 Características Principales
 
-There are several ways of editing your application.
+- **Terminal de Ventas (POS):** Interfaz intuitiva para capturar pedidos rápidamente, personalizar hamburguesas y procesar pagos.
+- **Vista de Cocina:** Monitor en tiempo real para que el personal de cocina gestione y marque los pedidos como listos.
+- **Panel de Administración:** Gestión de inventarios, reportes de ventas y configuración de productos.
+- **Sincronización en Tiempo Real:** Gracias a Firebase, todos los cambios se reflejan instantáneamente en todos los dispositivos.
+- **Modo Offline:** Persistencia de datos local para continuar trabajando incluso con interrupciones de internet.
 
-**Use Lovable**
+## 🛠️ Tecnologías Usadas
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Frontend:** React + Vite + TypeScript
+- **Estilos:** Tailwind CSS + shadcn/ui
+- **Backend/Base de Datos:** Firebase (Firestore & Auth)
+- **Estado Global:** React Context API
+- **Iconografía:** Lucide React
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📦 Instalación y Desarrollo
 
-**Use your preferred IDE**
+Sigue estos pasos para ejecutar el proyecto localmente:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. **Clonar el repositorio:**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```sh
+   git clone <URL_DEL_REPOSITORIO>
+   cd mr.-burger-pos
+   ```
 
-Follow these steps:
+2. **Instalar dependencias:**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+   ```sh
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. **Ejecutar en modo desarrollo:**
+   ```sh
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🏗️ Estructura del Proyecto
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- `/src/components`: Componentes reutilizables de la interfaz.
+- `/src/context`: Proveedores de contexto para el estado global (Pedidos, Autenticación, Carrito).
+- `/src/pages`: Vistas principales (Login, POS, Cocina, Admin).
+- `/src/lib`: Configuraciones de Firebase y utilidades generales.
+- `/src/data`: Definiciones de menús y categorías.
 
-**Edit a file directly in GitHub**
+## 📄 Licencia
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Este proyecto es privado para el uso exclusivo de Mr. Burger.
