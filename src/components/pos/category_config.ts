@@ -1,12 +1,12 @@
-import { Beef, Package, CupSoda, IceCreamCone, Cookie } from "lucide-react";
+import { Beef, Cookie } from "lucide-react";
 import type { Category } from "@/data/menu";
 
 export const categoryIcons: Record<Category, React.ElementType> = {
   burgers: Beef,
-  combos: Package,
+  combos: Beef,
   sides: Cookie,
-  drinks: CupSoda,
-  desserts: IceCreamCone,
+  drinks: Cookie,
+  desserts: Cookie,
 };
 
 export const categoryLabels: Record<Category, string> = {
@@ -17,4 +17,4 @@ export const categoryLabels: Record<Category, string> = {
   desserts: "Postres",
 };
 
-export const allCategories: Category[] = ["burgers", "sides", "combos", "drinks", "desserts"];
+export const allCategories: Category[] = ["burgers", "sides"];

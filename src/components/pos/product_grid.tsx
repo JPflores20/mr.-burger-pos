@@ -2,6 +2,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import type { MenuItem, Category } from "@/data/menu";
 import { menuItems } from "@/data/menu";
+import { allCategories } from "@/components/pos/category_config";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 
@@ -14,11 +15,10 @@ interface Props {
 }
 
 export default function ProductGrid({ category, searchQuery, onSearchChange, onSelectProduct, searchRef }: Props) {
-  const filtered = menuItems.filter((item) => {
+  const visibleItems = menuItems.filter((item) => (allCategories as string[]).includes(item.category));
+  const filtered = visibleItems.filter((item) => {
     const matchesCategory = item.category === category;
-    const matchesSearch = searchQuery
-      ? item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      : true;
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
     return searchQuery ? matchesSearch : matchesCategory;
   });
 
