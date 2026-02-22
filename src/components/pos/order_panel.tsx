@@ -1,5 +1,6 @@
 import { ShoppingCart, User } from "lucide-react";
 import { PrintableReceipt } from "./printable_receipt";
+import { cn } from "@/lib/utils";
 import { OrderItemsList } from "./order_items_list";
 import { OrderTotals } from "./order_totals";
 import { CashPaymentModal } from "./cash_payment_modal";
@@ -15,7 +16,9 @@ export default function OrderPanel() {
     showPaymentModal, setShowPaymentModal,
     amountReceived, setAmountReceived,
     completedOrder, lastAmountReceived,
-    showPrintModal, customerName, setCustomerName, receiptRef,
+    showPrintModal, customerName, setCustomerName, 
+    orderType, setOrderType,
+    receiptRef,
     paymentOptions, changeAmount, canConfirmCash,
     finalizeOrder, handleConfirmClick,
     closePrintModal, handlePrint
@@ -43,6 +46,26 @@ export default function OrderPanel() {
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
           />
+        </div>
+      </div>
+
+      {/* Order Type Selector */}
+      <div className="px-4 py-3 border-b border-border bg-secondary/5">
+        <div className="flex bg-secondary/30 rounded-lg p-1">
+          {(['local', 'para-llevar', 'plataformas'] as const).map((type) => (
+            <button
+              key={type}
+              onClick={() => setOrderType(type)}
+              className={cn(
+                "flex-1 py-2 text-[10px] font-bold uppercase rounded-md transition-all",
+                orderType === type 
+                  ? "bg-primary text-primary-foreground shadow-sm" 
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {type === 'local' ? 'Local' : type === 'para-llevar' ? 'Llevar' : 'Plataforma'}
+            </button>
+          ))}
         </div>
       </div>
 

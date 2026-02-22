@@ -20,6 +20,7 @@ export function useOrderPanel() {
   const [lastAmountReceived, setLastAmountReceived] = useState<number>(0);
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [customerName, setCustomerName] = useState("");
+  const [orderType, setOrderType] = useState<"local" | "para-llevar" | "plataformas">("local");
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const paymentOptions: { id: PaymentMethod; label: string; icon: React.ElementType }[] = [
@@ -46,7 +47,8 @@ export function useOrderPanel() {
         total,
         paymentMethod: paymentOptions.find((p) => p.id === payment)?.label || "Desconocido",
         cashierName: userName,
-        customerName: customerName.trim() || null, // Guardar como null si está vacío, evitando undefined que rompe Firestore
+        customerName: customerName.trim() || null, 
+        orderType: orderType,
       });
       
       let message = `¡Orden confirmada! Total: $${total.toFixed(2)} — ${payment.toUpperCase()}`;
@@ -61,6 +63,7 @@ export function useOrderPanel() {
       setShowPrintModal(true);
       clearCart();
       setCustomerName("");
+      setOrderType("local");
       setShowPaymentModal(false);
     } catch (error) {
       console.error("Error al finalizar la orden:", error);
@@ -94,6 +97,8 @@ export function useOrderPanel() {
     showPrintModal,
     customerName,
     setCustomerName,
+    orderType,
+    setOrderType,
     receiptRef,
     paymentOptions,
     numericReceived,

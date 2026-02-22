@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useCallback, type ReactNode } from "react";
-import type { CustomizationOption } from "@/data/menu";
+import type { CustomizationOption, Category } from "@/data/menu";
 
 export interface CartItem {
   cartId: string;
@@ -9,6 +9,7 @@ export interface CartItem {
   quantity: number;
   customizations: CustomizationOption[];
   image: string;
+  category: Category;
 }
 
 interface CartState {

@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, CheckCircle2 } from "lucide-react";
 import type { Order } from "@/context/orders_types";
+import { cn } from "@/lib/utils";
 
 interface Props {
   order: Order;
@@ -17,9 +18,19 @@ export function KitchenOrderCard({ order, getTimeElapsed, updateOrderStatus }: P
           <CardTitle className="text-2xl font-black">
             #{order.orderNumber || order.id.slice(0, 4).toUpperCase()}
           </CardTitle>
-          <div className="flex items-center gap-1 text-sm bg-black/20 px-2 py-1 rounded font-medium">
-            <Clock size={14} />
-            {getTimeElapsed(order.timestamp)}
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-1 text-sm bg-black/20 px-2 py-1 rounded font-medium">
+              <Clock size={14} />
+              {getTimeElapsed(order.timestamp)}
+            </div>
+            <span className={cn(
+              "text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shadow-sm ring-1 ring-inset",
+              order.orderType === 'local' ? "bg-green-500/20 text-green-100 ring-green-500/30" :
+              order.orderType === 'para-llevar' ? "bg-orange-500/20 text-orange-100 ring-orange-500/30" :
+              "bg-blue-500/20 text-blue-100 ring-blue-500/30"
+            )}>
+              {order.orderType === 'local' ? 'Local' : order.orderType === 'para-llevar' ? 'Llevar' : 'Plataforma'}
+            </span>
           </div>
         </div>
         {order.customerName && (

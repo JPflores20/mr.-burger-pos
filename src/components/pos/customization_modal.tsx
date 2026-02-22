@@ -41,6 +41,7 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
       quantity: 1,
       customizations: selected,
       image: item.image,
+      category: item.category,
     });
     onClose();
   }, [item, selected, addItem, onClose]);

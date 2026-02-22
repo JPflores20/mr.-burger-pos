@@ -3,30 +3,28 @@ import { db } from "@/lib/firebase";
 import { collection, doc, addDoc, setDoc, deleteDoc, updateDoc, onSnapshot, query, orderBy, Timestamp } from "firebase/firestore";
 import type { Order, OrdersContextValue } from "./orders_types";
 import { toast } from "sonner";
+import { useAdmin } from "./admin_context";
 
 const OrdersContext = createContext<OrdersContextValue | null>(null);
 
 export function OrdersProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
+  const { inventory, updateInventoryStock } = useAdmin();
 
   useEffect(() => {
     // Escucha en tiempo real de las órdenes en Firebase
     console.log("Iniciando listener de órdenes...");
     
-    // Filtramos para obtener órdenes de hoy (opcional, pero recomendado para 'Ventas del Día')
+    // Filtramos para obtener órdenes de hoy
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     
-    // Nota: Para filtrar por fecha en Firestore recomendamos un índice si se usa con orderBy.
-    // Por ahora, traemos las últimas 100 o filtramos localmente si es necesario.
     const q = query(
       collection(db, "orders"), 
       orderBy("timestamp", "desc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log(`Snapshot de órdenes recibido. Documentos: ${snapshot.docs.length}. De caché: ${snapshot.metadata.fromCache}`);
-      
       const fetchedOrders: Order[] = snapshot.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -39,12 +37,12 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
           paymentMethod: data.paymentMethod || "Desconocido",
           cashierName: data.cashierName || "Sistema",
           customerName: data.customerName ?? null,
+          orderType: data.orderType || "local",
           timestamp: data.timestamp?.toDate() || new Date(),
           status: data.status || "pending",
         };
       });
 
-      // Filtrar solo las de hoy localmente para mayor seguridad y evitar confusiones
       const today = new Date();
       const filtered = fetchedOrders.filter(order => {
         const orderDate = new Date(order.timestamp);
@@ -61,13 +59,11 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
 
     return () => unsubscribe();
   }, []);
+
   const addOrder = (orderData: Omit<Order, "id" | "timestamp" | "status" | "orderNumber">): Order => {
-    // Generamos una referencia de documento para obtener el ID de inmediato
     const orderRef = doc(collection(db, "orders"));
     const newId = orderRef.id;
 
-    // Calcular el siguiente número de orden basado en las órdenes de hoy
-    // Usamos el estado 'orders' que ya está filtrado por hoy en el listener
     const maxOrderNumber = orders.reduce((max, o) => {
       const num = typeof o.orderNumber === 'number' ? o.orderNumber : 0;
       return Math.max(max, num);
@@ -83,13 +79,41 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       status: "pending",
     };
 
-    // Preparamos el objeto para Firebase
+    // --- Deducción automática de Carne de Hamburguesa ---
+    const meatItem = inventory.find(i => i.id === "main_patties") || 
+                     inventory.find(i => 
+                       i.name.toLowerCase().includes("carne") && 
+                       i.name.toLowerCase().includes("hamburguesa")
+                     );
+
+    if (meatItem) {
+      let pattiesToDeduct = 0;
+      orderData.items.forEach(item => {
+        if (item.category === "burgers") {
+          pattiesToDeduct += item.quantity;
+        } else if (item.category === "combos") {
+          // Detectamos tipos de combo por nombre o ID si es posible
+          const name = item.name.toLowerCase();
+          if (name.includes("doble")) {
+            pattiesToDeduct += (item.quantity * 2);
+          } else if (name.includes("familiar")) {
+            pattiesToDeduct += (item.quantity * 4);
+          } else {
+            pattiesToDeduct += item.quantity;
+          }
+        }
+      });
+
+      if (pattiesToDeduct > 0) {
+        updateInventoryStock(meatItem.id, -pattiesToDeduct);
+      }
+    }
+
     const orderForDb = {
       ...newOrder,
       timestamp: Timestamp.fromDate(newOrder.timestamp),
     };
 
-    // Guardamos en Firestore
     setDoc(orderRef, orderForDb)
       .then(() => {
         console.log("Orden guardada exitosamente en Firebase con ID:", newId);
@@ -104,17 +128,11 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
 
 
   const removeOrder = (id: string) => {
-    // Actualización optimista: lo quitamos de la UI de inmediato
     setOrders((current) => current.filter(o => o.id !== id));
-
     deleteDoc(doc(db, "orders", id))
-      .then(() => {
-        console.log("Orden eliminada de Firebase:", id);
-      })
       .catch((error) => {
         console.error("Error al eliminar orden:", error);
         toast.error("No se pudo eliminar la orden de la base de datos.");
-        // Si falla, el listener de Firebase volverá a traer la orden eventualmente
       });
   };
 

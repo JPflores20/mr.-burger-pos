@@ -10,13 +10,14 @@ export interface Order {
   paymentMethod: string;
   cashierName?: string;
   customerName?: string | null;
+  orderType: "local" | "para-llevar" | "plataformas";
   timestamp: Date;
   status: "pending" | "completed";
 }
 
 export interface OrdersContextValue {
   orders: Order[];
-  addOrder: (order: Omit<Order, "id" | "timestamp" | "status">) => Order;
+  addOrder: (order: Omit<Order, "id" | "timestamp" | "status" | "orderNumber">) => Order;
   removeOrder: (id: string) => void;
   updateOrderStatus: (id: string, status: "pending" | "completed") => void;
   clearOrders: () => void;
