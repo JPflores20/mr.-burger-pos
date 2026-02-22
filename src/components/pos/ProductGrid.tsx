@@ -32,7 +32,7 @@ export default function ProductGrid({ category, searchQuery, onSearchChange, onS
             ref={searchRef}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search products... (F2)"
+            placeholder="Buscar productos... (F2)"
             className="pl-10 bg-secondary border-none text-foreground placeholder:text-muted-foreground h-10"
           />
         </div>
@@ -53,12 +53,17 @@ export default function ProductGrid({ category, searchQuery, onSearchChange, onS
             >
               <span className="text-4xl mb-2">{item.image}</span>
               <span className="text-sm font-medium text-foreground text-center leading-tight">{item.name}</span>
+              {item.description && (
+                <span className="text-[10px] text-muted-foreground text-center mt-1 leading-snug line-clamp-2">
+                  {item.description}
+                </span>
+              )}
               <span className="mt-1 text-base font-bold text-primary">${item.price.toFixed(2)}</span>
             </button>
           ))}
           {filtered.length === 0 && (
             <div className="col-span-full py-20 text-center text-muted-foreground">
-              No products found
+              No se encontraron productos
             </div>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { Beef, Package, CupSoda, IceCreamCone, Cookie } from "lucide-react";
+import { Beef, Package, CupSoda, IceCreamCone, Cookie, ReceiptText } from "lucide-react";
 import type { Category } from "@/data/menu";
 import { cn } from "@/lib/utils";
 
@@ -11,21 +11,22 @@ const categoryIcons: Record<Category, React.ElementType> = {
 };
 
 const categoryLabels: Record<Category, string> = {
-  burgers: "Burgers",
+  burgers: "Hamburguesas",
   combos: "Combos",
-  sides: "Sides",
-  drinks: "Drinks",
-  desserts: "Desserts",
+  sides: "Complementos",
+  drinks: "Bebidas",
+  desserts: "Postres",
 };
 
-const allCategories: Category[] = ["burgers", "combos", "sides", "drinks", "desserts"];
+const allCategories: Category[] = ["burgers", "sides", "combos", "drinks", "desserts"];
 
 interface Props {
   active: Category;
   onSelect: (c: Category) => void;
+  onOpenOrders: () => void;
 }
 
-export default function CategorySidebar({ active, onSelect }: Props) {
+export default function CategorySidebar({ active, onSelect, onOpenOrders }: Props) {
   return (
     <aside className="flex h-screen w-20 flex-col items-center border-r border-border bg-card py-4 gap-1">
       {/* Logo */}
@@ -37,15 +38,20 @@ export default function CategorySidebar({ active, onSelect }: Props) {
         {allCategories.map((cat) => {
           const Icon = categoryIcons[cat];
           const isActive = active === cat;
+          const isDisabled = cat === "combos" || cat === "drinks" || cat === "desserts";
+          
           return (
             <button
               key={cat}
-              onClick={() => onSelect(cat)}
+              onClick={() => !isDisabled && onSelect(cat)}
+              disabled={isDisabled}
               className={cn(
                 "flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors",
-                isActive
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                isDisabled 
+                  ? "opacity-30 cursor-not-allowed grayscale"
+                  : isActive
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               )}
             >
               <Icon size={22} />
@@ -54,6 +60,14 @@ export default function CategorySidebar({ active, onSelect }: Props) {
           );
         })}
       </div>
+
+      <button
+        onClick={onOpenOrders}
+        className="mt-auto mb-4 flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-secondary hover:text-foreground"
+      >
+        <ReceiptText size={22} />
+        Ventas
+      </button>
     </aside>
   );
 }

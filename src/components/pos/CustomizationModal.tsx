@@ -101,16 +101,21 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
           <DialogTitle className="flex items-center gap-3 text-lg">
             <span className="text-3xl">{item.image}</span>
             <div>
-              <div>{item.name}</div>
+              <div className="font-bold">{item.name}</div>
               <div className="text-sm font-normal text-muted-foreground">Base: ${item.price.toFixed(2)}</div>
+              {item.description && (
+                <div className="text-xs font-normal text-muted-foreground mt-1 max-w-sm flex-1 leading-tight">
+                  {item.description}
+                </div>
+              )}
             </div>
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
-          {renderGroup("Remove", removals)}
-          {renderGroup("Add", adds)}
-          {renderGroup("Upgrade", upgrades)}
+          {renderGroup("Quitar", removals)}
+          {renderGroup("Agregar", adds)}
+          {renderGroup("Mejorar", upgrades)}
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-border mt-2">
@@ -118,7 +123,7 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
             Total: <span className="text-primary">${totalPrice.toFixed(2)}</span>
           </div>
           <Button onClick={handleAdd} className="bg-primary hover:bg-primary/90 text-primary-foreground px-6">
-            Add to Order ↵
+            Agregar a la Orden ↵
           </Button>
         </div>
       </DialogContent>
