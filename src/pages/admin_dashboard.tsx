@@ -35,8 +35,10 @@ export default function AdminDashboard() {
   const [itemStock, setItemStock] = useState("");
   const [itemMinStock, setItemMinStock] = useState("");
   const [itemUnit, setItemUnit] = useState("Pzs");
+  const [itemCost, setItemCost] = useState("");
 
   const netProfit = dailyTotal - totalExpenses;
+  const totalInventoryValue = inventory.reduce((acc, item) => acc + (item.stock * (item.cost || 0)), 0);
 
   // Data for Charts
   const salesByType = [
@@ -67,11 +69,13 @@ export default function AdminDashboard() {
       name: itemName,
       stock: parseInt(itemStock),
       minStock: parseInt(itemMinStock),
-      unit: itemUnit
+      unit: itemUnit,
+      cost: parseFloat(itemCost) || 0
     });
     setItemName("");
     setItemStock("");
     setItemMinStock("");
+    setItemCost("");
   };
 
   return (
@@ -115,6 +119,15 @@ export default function AdminDashboard() {
                  <p className="text-2xl font-black text-white">${totalExpenses.toFixed(2)}</p>
                </div>
              </div>
+             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center gap-4 shadow-2xl">
+                <div className="bg-blue-500/10 p-3 rounded-xl">
+                  <Package className="h-6 w-6 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">Valor Inventario</p>
+                  <p className="text-2xl font-black text-white">${totalInventoryValue.toLocaleString()}</p>
+                </div>
+              </div>
           </div>
         </div>
 
@@ -279,7 +292,7 @@ export default function AdminDashboard() {
               <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
               <CardHeader><CardTitle className="text-lg font-black uppercase text-white">Registrar Nuevo Insumo</CardTitle></CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                   <input 
                     type="text" 
                     placeholder="Nombre (ej. Pan Hamburguesa)" 
@@ -289,10 +302,17 @@ export default function AdminDashboard() {
                   />
                   <input 
                     type="number" 
-                    placeholder="Stock Inicial" 
+                    placeholder="Stock" 
                     className="bg-zinc-950 border-zinc-800 text-white px-5 py-3 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all placeholder:text-zinc-700 font-black"
                     value={itemStock}
                     onChange={(e) => setItemStock(e.target.value)}
+                  />
+                  <input 
+                    type="number" 
+                    placeholder="Costo u." 
+                    className="bg-zinc-950 border-zinc-800 text-white px-5 py-3 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all placeholder:text-zinc-700 font-black text-emerald-400"
+                    value={itemCost}
+                    onChange={(e) => setItemCost(e.target.value)}
                   />
                   <input 
                     type="number" 
@@ -312,7 +332,7 @@ export default function AdminDashboard() {
                     <option value="Lt">Litros (Lt)</option>
                     <option value="Paq">Paquetes (Paq)</option>
                   </select>
-                  <Button onClick={handleAddInventoryItem} className="md:col-span-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-emerald-500/10">
+                  <Button onClick={handleAddInventoryItem} className="md:col-span-6 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl shadow-lg shadow-emerald-500/10">
                     <Plus className="mr-2 h-5 w-5" /> AÑADIR AL INVENTARIO
                   </Button>
                 </div>
@@ -351,7 +371,10 @@ export default function AdminDashboard() {
                             <div className="flex justify-between items-start mr-6">
                               <div>
                                  <p className="font-black text-xl text-white tracking-tight">{item.name}</p>
-                                 <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest mt-1 block">Unidad: {item.unit}</span>
+                                 <div className="flex gap-2 mt-1">
+                                   <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest block">Unidad: {item.unit}</span>
+                                   <span className="text-[10px] font-bold uppercase text-emerald-500 tracking-widest block">• Costo: ${item.cost || 0}</span>
+                                 </div>
                               </div>
                               {item.stock <= item.minStock && (
                                  <div className="bg-orange-500/20 p-2 rounded-lg text-orange-500 h-fit" title="¡Stock Crítico!">
@@ -400,6 +423,10 @@ export default function AdminDashboard() {
                                  />
                                </div>
                                <p className="text-[9px] text-zinc-500 mt-2 font-bold uppercase">Meta de seguridad semanal: {item.minStock * 4} {item.unit}</p>
+                               <div className="mt-3 pt-3 border-t border-zinc-900 flex justify-between items-center">
+                                 <span className="text-[10px] font-black text-zinc-600 uppercase">Valor en Stock:</span>
+                                 <span className="text-sm font-black text-white">${((item.stock || 0) * (item.cost || 0)).toFixed(2)}</span>
+                               </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -440,4 +467,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-

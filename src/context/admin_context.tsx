@@ -19,6 +19,7 @@ export interface InventoryItem {
   stock: number;
   minStock: number;
   unit: string;
+  cost?: number; // Costo por unidad
 }
 
 interface AdminContextType {
@@ -83,7 +84,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           name: "Carne de Hamburguesa",
           stock: 20,
           minStock: 10,
-          unit: "Pzs"
+          unit: "Pzs",
+          cost: 25 // Costo semilla
         }).catch(err => console.error("Error seeding meat:", err));
       }
     });

@@ -89,19 +89,26 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
     if (meatItem) {
       let pattiesToDeduct = 0;
       orderData.items.forEach(item => {
+        let pattiesPerItem = 0;
+        
         if (item.category === "burgers") {
-          pattiesToDeduct += item.quantity;
+          pattiesPerItem = 1;
         } else if (item.category === "combos") {
-          // Detectamos tipos de combo por nombre o ID si es posible
           const name = item.name.toLowerCase();
           if (name.includes("doble")) {
-            pattiesToDeduct += (item.quantity * 2);
+            pattiesPerItem = 2;
           } else if (name.includes("familiar")) {
-            pattiesToDeduct += (item.quantity * 4);
+            pattiesPerItem = 4;
           } else {
-            pattiesToDeduct += item.quantity;
+            pattiesPerItem = 1;
           }
         }
+
+        // Sumar extras de carne
+        const extraPatties = item.customizations?.filter(c => c.id === "extra-patty").length || 0;
+        pattiesPerItem += extraPatties;
+
+        pattiesToDeduct += (pattiesPerItem * item.quantity);
       });
 
       if (pattiesToDeduct > 0) {

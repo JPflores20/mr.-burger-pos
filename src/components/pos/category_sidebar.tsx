@@ -43,8 +43,11 @@ export default function CategorySidebar({ active, onSelect, onOpenOrders }: Prop
               : "bg-emerald-500/10 border-emerald-500/30 text-emerald-600"
           )}>
             <CircleDot size={18} className="mb-1" />
-            <span className="text-[12px] font-black leading-none">{meatItem.stock}</span>
-            <span className="text-[7px] font-bold uppercase mt-1">Carne</span>
+            <div className="flex items-baseline gap-0.5">
+              <span className="text-[12px] font-black leading-none">{meatItem.stock}</span>
+              <span className="text-[8px] font-bold uppercase">Pzs</span>
+            </div>
+            <span className="text-[7px] font-black uppercase mt-1 tracking-tighter text-zinc-500">Stock Carne</span>
           </div>
         )}
 

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Lock, Mail, Store, Eye, EyeOff } from "lucide-react";
+import { ADMIN_EMAILS } from "@/context/auth_context";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ export default function Login() {
       const user = userCredential.user;
 
       // El admin y tu correo entran garantizado al instante
-      const isAdmin = email === "admin@mrburger.com" || email === "pepe.jlfc.16@gmail.com";
+      const isAdmin = ADMIN_EMAILS.includes(email);
       
       if (isAdmin) {
         toast.success(`¡Bienvenido!`);

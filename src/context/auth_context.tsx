@@ -4,7 +4,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { toast } from "sonner";
 
-const ADMIN_EMAILS = ["pepe.jlfc.16@gmail.com", "admin@mrburger.com"];
+export const ADMIN_EMAILS = ["pepe.jlfc.16@gmail.com", "admin@mrburger.com", "mayra_dense@hotmail.com"];
 
 interface AuthContextType {
   currentUser: User | null;
