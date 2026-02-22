@@ -26,7 +26,7 @@ const App = () => (
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/cocina" element={<ProtectedRoute allowCashier={false}><KitchenView /></ProtectedRoute>} />
+              <Route path="/cocina" element={<ProtectedRoute allowCashier={true}><KitchenView /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

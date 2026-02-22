@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +24,7 @@ export function DeleteOrderDialog({
       <DialogContent className="sm:max-w-md bg-card border-border">
         <DialogHeader>
           <DialogTitle>Eliminar Venta</DialogTitle>
+          <DialogDescription className="sr-only">Ingresa el PIN de seguridad para confirmar la eliminación de esta venta.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <p className="text-sm text-muted-foreground">

@@ -1,15 +1,16 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Receipt, Clock, Trash2 } from "lucide-react";
+import { Receipt, Clock, Trash2, Printer } from "lucide-react";
 import type { Order } from "@/context/orders_types";
 
 interface Props {
   orders: Order[];
   isAdmin: boolean;
   attemptDelete: (id: string) => void;
+  onPrint?: (order: Order) => void;
 }
 
-export function OrderHistoryList({ orders, isAdmin, attemptDelete }: Props) {
+export function OrderHistoryList({ orders, isAdmin, attemptDelete, onPrint }: Props) {
   return (
     <ScrollArea className="flex-1 p-6">
       {orders.length === 0 ? (
@@ -23,7 +24,14 @@ export function OrderHistoryList({ orders, isAdmin, attemptDelete }: Props) {
             <div key={order.id} className="rounded-xl border border-border bg-background p-4 shadow-sm">
               <div className="flex justify-between items-start mb-3 group">
                 <div>
-                  <span className="text-xs font-mono text-muted-foreground">#{order.id.slice(0, 8)}</span>
+                  <span className="text-xs font-mono text-muted-foreground">
+                    #{order.orderNumber || order.id.slice(0, 8).toUpperCase()}
+                  </span>
+                  {order.customerName && (
+                    <span className="ml-3 px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded-md font-bold uppercase ring-1 ring-primary/20">
+                      Cliente: {order.customerName}
+                    </span>
+                  )}
                   <div className="flex items-center gap-1 text-sm font-medium mt-1">
                     <Clock size={14} className="text-primary" />
                     {new Date(order.timestamp).toLocaleTimeString("es-MX", { hour: '2-digit', minute: '2-digit' })}
@@ -37,13 +45,24 @@ export function OrderHistoryList({ orders, isAdmin, attemptDelete }: Props) {
                     ${order.total.toFixed(2)}
                   </div>
                   {isAdmin && (
-                    <button 
-                      onClick={() => attemptDelete(order.id)}
-                      className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
-                      title="Eliminar venta"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    <div className="flex gap-2">
+                      {onPrint && (
+                        <button 
+                          onClick={() => onPrint(order)}
+                          className="text-muted-foreground hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100"
+                          title="Imprimir ticket"
+                        >
+                          <Printer size={16} />
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => attemptDelete(order.id)}
+                        className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                        title="Eliminar venta"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

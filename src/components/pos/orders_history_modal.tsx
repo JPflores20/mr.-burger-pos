@@ -1,6 +1,7 @@
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useOrders } from "@/context/orders_context";
+import type { Order } from "@/context/orders_types";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth_context";
@@ -8,6 +9,8 @@ import { exportOrdersToPDF } from "@/lib/export_pdf";
 import { OrderHistoryList } from "./order_history_list";
 import { DeleteOrderDialog } from "./delete_order_dialog";
 import { OrdersHistoryHeader } from "./orders_history_header";
+import { PrintableReceipt } from "./printable_receipt";
+import { useRef } from "react";
 
 interface Props {
   open: boolean;
@@ -18,7 +21,9 @@ export default function OrdersHistoryModal({ open, onClose }: Props) {
   const { orders, dailyTotal, removeOrder } = useOrders();
   const { isAdmin } = useAuth();
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+  const [orderToPrint, setOrderToPrint] = useState<Order | null>(null);
   const [pin, setPin] = useState("");
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (orderToDelete && !isAdmin) {
@@ -53,6 +58,14 @@ export default function OrdersHistoryModal({ open, onClose }: Props) {
     exportOrdersToPDF(orders, dailyTotal);
   };
 
+  const handlePrintPastOrder = (order: Order) => {
+    setOrderToPrint(order);
+    setTimeout(() => {
+      window.print();
+      setOrderToPrint(null);
+    }, 100);
+  };
+
   return (
     <Sheet open={open} onOpenChange={(isVisible) => !isVisible && onClose()}>
       <SheetContent side="left" className="w-[400px] sm:w-[540px] flex flex-col bg-card border-border p-0">
@@ -66,7 +79,13 @@ export default function OrdersHistoryModal({ open, onClose }: Props) {
           orders={orders} 
           isAdmin={isAdmin} 
           attemptDelete={attemptDelete} 
+          onPrint={handlePrintPastOrder}
         />
+        
+        {/* Hidden Ticket for Printing Past Orders */}
+        <div className="hidden">
+           <PrintableReceipt ref={printRef} order={orderToPrint} />
+        </div>
       </SheetContent>
 
       <DeleteOrderDialog

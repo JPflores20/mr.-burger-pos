@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useCart } from "@/context/cart_context";
@@ -79,6 +79,7 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
               )}
             </div>
           </DialogTitle>
+          <DialogDescription className="sr-only">Selecciona las personalizaciones para {item.name}.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1">

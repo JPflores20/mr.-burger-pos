@@ -15,13 +15,19 @@ export function KitchenOrderCard({ order, getTimeElapsed, updateOrderStatus }: P
       <CardHeader className="bg-primary text-primary-foreground p-4">
         <div className="flex justify-between items-center">
           <CardTitle className="text-2xl font-black">
-            #{order.id.slice(0, 4)}
+            #{order.orderNumber || order.id.slice(0, 4).toUpperCase()}
           </CardTitle>
           <div className="flex items-center gap-1 text-sm bg-black/20 px-2 py-1 rounded font-medium">
             <Clock size={14} />
             {getTimeElapsed(order.timestamp)}
           </div>
         </div>
+        {order.customerName && (
+          <div className="mt-2 bg-white/20 px-3 py-1.5 rounded-lg border border-white/30 backdrop-blur-sm">
+            <p className="text-xs uppercase font-bold text-white/70">Cliente:</p>
+            <p className="text-xl font-black text-white truncate">{order.customerName}</p>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="flex-1 p-0 flex flex-col">
         <div className="flex-1 p-4 space-y-4 overflow-y-auto">

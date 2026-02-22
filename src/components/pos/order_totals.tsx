@@ -33,10 +33,6 @@ export function OrderTotals({
           <span>Subtotal</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-muted-foreground">
-          <span>IVA (16%)</span>
-          <span>${tax.toFixed(2)}</span>
-        </div>
         <div className="flex justify-between text-lg font-black text-foreground pt-1 border-t border-border">
           <span>Total</span>
           <span className="text-primary">${total.toFixed(2)}</span>

@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getAuth, browserSessionPersistence, setPersistence } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA4LKOCgsPnN4mRlC0MN9SDUmyKxAE5Jy8",
@@ -17,4 +17,12 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+// Forzamos persistencia de sesión en el navegador
+if (typeof window !== "undefined") {
+  setPersistence(auth, browserSessionPersistence).catch(() => {});
+}
+
 export default app;
+
+

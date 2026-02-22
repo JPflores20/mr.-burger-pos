@@ -51,15 +51,13 @@ export default function CategorySidebar({ active, onSelect, onOpenOrders }: Prop
         </div>
 
         <div className="mt-auto flex flex-col items-center gap-2 mb-4">
-          {!isCashier && (
-            <button
-              onClick={() => navigate("/cocina")}
-              className="flex w-20 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-orange-500/10 hover:text-orange-600"
-            >
-              <ChefHat size={22} />
-              Cocina
-            </button>
-          )}
+          <button
+            onClick={() => navigate("/cocina")}
+            className="flex w-20 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-orange-500/10 hover:text-orange-600"
+          >
+            <ChefHat size={22} />
+            Cocina
+          </button>
           {isAdmin && (
             <button
               onClick={onOpenOrders}

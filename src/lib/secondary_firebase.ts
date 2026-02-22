@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, inMemoryPersistence, setPersistence, signOut, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA4LKOCgsPnN4mRlC0MN9SDUmyKxAE5Jy8",
@@ -12,4 +12,12 @@ const firebaseConfig = {
 };
 
 const secondaryApp = initializeApp(firebaseConfig, "secondary");
-export const secondaryAuth = getAuth(secondaryApp);
+const secondaryAuthInstance = getAuth(secondaryApp);
+
+export async function getFreshSecondaryAuth(): Promise<Auth> {
+  await setPersistence(secondaryAuthInstance, inMemoryPersistence);
+  if (secondaryAuthInstance.currentUser) {
+    signOut(secondaryAuthInstance).catch(() => {});
+  }
+  return secondaryAuthInstance;
+}

@@ -71,8 +71,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return sum + (item.basePrice + customPrice) * item.quantity;
   }, 0);
 
-  const tax = subtotal * 0.16;
-  const total = subtotal + tax;
+  const tax = 0;
+  const total = subtotal;
 
   return (
     <CartContext.Provider value={{ items: state.items, addItem, removeItem, updateQuantity, clearCart, subtotal, tax, total }}>

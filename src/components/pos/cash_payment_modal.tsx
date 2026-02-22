@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ export function CashPaymentModal({
       <DialogContent className="sm:max-w-md bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-xl">Calculadora de Cambio</DialogTitle>
+          <DialogDescription className="sr-only">Ingresa el monto recibido para calcular el cambio a entregar al cliente.</DialogDescription>
         </DialogHeader>
         <div className="space-y-6 py-4">
           <div className="flex justify-between items-center text-lg">

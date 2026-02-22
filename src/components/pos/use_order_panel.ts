@@ -3,10 +3,12 @@ import { toast } from "sonner";
 import { useCart } from "@/context/cart_context";
 import type { Order } from "@/context/orders_types";
 import { useOrders } from "@/context/orders_context";
+import { useAuth } from "@/context/auth_context";
 import type { PaymentMethod } from "./order_panel";
 import { Banknote, ArrowRightLeft } from "lucide-react";
 
 export function useOrderPanel() {
+  const { userName } = useAuth();
   const cartProps = useCart();
   const { items, subtotal, tax, total, clearCart } = cartProps;
   const { addOrder } = useOrders();
@@ -17,6 +19,7 @@ export function useOrderPanel() {
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
   const [lastAmountReceived, setLastAmountReceived] = useState<number>(0);
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [customerName, setCustomerName] = useState("");
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const paymentOptions: { id: PaymentMethod; label: string; icon: React.ElementType }[] = [
@@ -35,26 +38,34 @@ export function useOrderPanel() {
   }, [showPaymentModal]);
 
   const finalizeOrder = (change?: number) => {
-    const newOrder = addOrder({
-      items,
-      subtotal,
-      tax,
-      total,
-      paymentMethod: paymentOptions.find((p) => p.id === payment)?.label || "Desconocido",
-    });
-    
-    let message = `¡Orden confirmada! Total: $${total.toFixed(2)} — ${payment.toUpperCase()}`;
-    if (change !== undefined && change > 0) {
-      message += ` (Cambio: $${change.toFixed(2)})`;
+    try {
+      const newOrder = addOrder({
+        items,
+        subtotal,
+        tax,
+        total,
+        paymentMethod: paymentOptions.find((p) => p.id === payment)?.label || "Desconocido",
+        cashierName: userName,
+        customerName: customerName.trim() || null, // Guardar como null si está vacío, evitando undefined que rompe Firestore
+      });
+      
+      let message = `¡Orden confirmada! Total: $${total.toFixed(2)} — ${payment.toUpperCase()}`;
+      if (change !== undefined && change > 0) {
+        message += ` (Cambio: $${change.toFixed(2)})`;
+      }
+      
+      toast.success(message);
+      
+      setCompletedOrder(newOrder);
+      setLastAmountReceived(change !== undefined ? total + change : total);
+      setShowPrintModal(true);
+      clearCart();
+      setCustomerName("");
+      setShowPaymentModal(false);
+    } catch (error) {
+      console.error("Error al finalizar la orden:", error);
+      toast.error("Ocurrió un error al procesar el pago.");
     }
-    
-    toast.success(message);
-    
-    setCompletedOrder(newOrder);
-    setLastAmountReceived(change !== undefined ? total + change : total);
-    setShowPrintModal(true);
-    clearCart();
-    setShowPaymentModal(false);
   };
 
   const handleConfirmClick = () => {
@@ -81,6 +92,8 @@ export function useOrderPanel() {
     completedOrder,
     lastAmountReceived,
     showPrintModal,
+    customerName,
+    setCustomerName,
     receiptRef,
     paymentOptions,
     numericReceived,

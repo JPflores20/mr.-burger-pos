@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,9 +22,23 @@ export default function Login() {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userName = userCredential.user.displayName ?? userCredential.user.email ?? "Usuario";
-      toast.success(`¡Bienvenido, ${userName}!`);
+      const user = userCredential.user;
+
+      // El admin y tu correo entran garantizado al instante
+      const isAdmin = email === "admin@mrburger.com" || email === "pepe.jlfc.16@gmail.com";
+      
+      if (isAdmin) {
+        toast.success(`¡Bienvenido!`);
+        navigate("/");
+        return;
+      }
+
+      // Para los cajeros, dejamos que entren de inmediato para que la UI no se congele.
+      // La validación se hace "en vuelo" hacia la página principal.
+      // Si el cajero resultara estar inactivo, el sistema lo sacará automáticamente al cargar el Dashboard.
+      toast.success("Iniciando sesión...");
       navigate("/");
+
     } catch (error: any) {
       console.error(error);
       const errorCode = error.code;

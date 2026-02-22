@@ -19,9 +19,15 @@ export const PrintableReceipt = forwardRef<HTMLDivElement, Props>(({ order, amou
         <p className="text-xs mt-1">
           {new Date(order.timestamp).toLocaleDateString('es-MX')} - {new Date(order.timestamp).toLocaleTimeString('es-MX')}
         </p>
+        <p className="text-[10px] mt-1 italic">Atendido por: {order.cashierName || "Sistema"}</p>
         <p className="font-bold border-y border-dashed border-black py-1 mt-2 mb-2 text-lg">
-          Ticket #{order.id.slice(0, 8)}
+          Ticket #{order.orderNumber || order.id.slice(0, 8).toUpperCase()}
         </p>
+        {order.customerName && (
+          <p className="text-sm font-black mb-2 uppercase border-b border-black pb-1">
+            Cliente: {order.customerName}
+          </p>
+        )}
       </div>
 
       <ReceiptItemsTable items={order.items} />
@@ -31,10 +37,6 @@ export const PrintableReceipt = forwardRef<HTMLDivElement, Props>(({ order, amou
         <div className="flex justify-between">
           <span>Subtotal:</span>
           <span>${order.subtotal.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>IVA (16%):</span>
-          <span>${order.tax.toFixed(2)}</span>
         </div>
         <div className="flex justify-between font-black text-lg border-t border-dashed border-black pt-1 mt-1">
           <span>TOTAL:</span>

@@ -1,4 +1,4 @@
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { PrintableReceipt } from "./printable_receipt";
 import { OrderItemsList } from "./order_items_list";
 import { OrderTotals } from "./order_totals";
@@ -15,7 +15,7 @@ export default function OrderPanel() {
     showPaymentModal, setShowPaymentModal,
     amountReceived, setAmountReceived,
     completedOrder, lastAmountReceived,
-    showPrintModal, receiptRef,
+    showPrintModal, customerName, setCustomerName, receiptRef,
     paymentOptions, changeAmount, canConfirmCash,
     finalizeOrder, handleConfirmClick,
     closePrintModal, handlePrint
@@ -30,6 +30,20 @@ export default function OrderPanel() {
         <span className="ml-auto rounded-full bg-primary/20 px-2 py-0.5 text-xs font-bold text-primary">
           {items.length}
         </span>
+      </div>
+
+      {/* Customer Name Input (Optional) */}
+      <div className="px-4 py-2 border-b border-border bg-secondary/10">
+        <div className="relative">
+          <User className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" size={14} />
+          <input
+            type="text"
+            placeholder="Nombre del Cliente (Opcional)"
+            className="w-full h-8 pl-8 pr-3 text-xs bg-background border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Items */}

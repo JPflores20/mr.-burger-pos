@@ -2,11 +2,14 @@ import type { CartItem } from "./cart_context";
 
 export interface Order {
   id: string;
+  orderNumber: number;
   items: CartItem[];
   subtotal: number;
   tax: number;
   total: number;
   paymentMethod: string;
+  cashierName?: string;
+  customerName?: string | null;
   timestamp: Date;
   status: "pending" | "completed";
 }
