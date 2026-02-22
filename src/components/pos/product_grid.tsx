@@ -31,7 +31,7 @@ export default function ProductGrid({ category, searchQuery, onSearchChange, onS
           <Input
             ref={searchRef}
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(event) => onSearchChange(event.target.value)}
             placeholder="Buscar productos... (F2)"
             className="pl-10 bg-secondary border-none text-foreground placeholder:text-muted-foreground h-10"
           />

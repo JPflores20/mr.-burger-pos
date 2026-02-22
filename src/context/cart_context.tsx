@@ -49,7 +49,7 @@ interface CartContextValue {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (cartId: string) => void;
-  updateQty: (cartId: string, delta: number) => void;
+  updateQuantity: (cartId: string, delta: number) => void;
   clearCart: () => void;
   subtotal: number;
   tax: number;
@@ -63,7 +63,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((item: CartItem) => dispatch({ type: "ADD_ITEM", payload: item }), []);
   const removeItem = useCallback((cartId: string) => dispatch({ type: "REMOVE_ITEM", cartId }), []);
-  const updateQty = useCallback((cartId: string, delta: number) => dispatch({ type: "UPDATE_QTY", cartId, delta }), []);
+  const updateQuantity = useCallback((cartId: string, delta: number) => dispatch({ type: "UPDATE_QTY", cartId, delta }), []);
   const clearCart = useCallback(() => dispatch({ type: "CLEAR" }), []);
 
   const subtotal = state.items.reduce((sum, item) => {
@@ -75,14 +75,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const total = subtotal + tax;
 
   return (
-    <CartContext.Provider value={{ items: state.items, addItem, removeItem, updateQty, clearCart, subtotal, tax, total }}>
+    <CartContext.Provider value={{ items: state.items, addItem, removeItem, updateQuantity, clearCart, subtotal, tax, total }}>
       {children}
     </CartContext.Provider>
   );
 }
 
 export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used within CartProvider");
-  return ctx;
+  const context = useContext(CartContext);
+  if (!context) throw new Error("useCart must be used within CartProvider");
+  return context;
 }

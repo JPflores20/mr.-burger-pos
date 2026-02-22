@@ -1,24 +1,9 @@
-import { Beef, Package, CupSoda, IceCreamCone, Cookie, ReceiptText } from "lucide-react";
+import { ReceiptText, ChefHat, LogOut } from "lucide-react";
 import type { Category } from "@/data/menu";
 import { cn } from "@/lib/utils";
-
-const categoryIcons: Record<Category, React.ElementType> = {
-  burgers: Beef,
-  combos: Package,
-  sides: Cookie,
-  drinks: CupSoda,
-  desserts: IceCreamCone,
-};
-
-const categoryLabels: Record<Category, string> = {
-  burgers: "Hamburguesas",
-  combos: "Combos",
-  sides: "Complementos",
-  drinks: "Bebidas",
-  desserts: "Postres",
-};
-
-const allCategories: Category[] = ["burgers", "sides", "combos", "drinks", "desserts"];
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/auth_context";
+import { categoryIcons, categoryLabels, allCategories } from "./category_config";
 
 interface Props {
   active: Category;
@@ -27,6 +12,8 @@ interface Props {
 }
 
 export default function CategorySidebar({ active, onSelect, onOpenOrders }: Props) {
+  const navigate = useNavigate();
+  const { logout, isCashier, isAdmin } = useAuth();
   return (
     <aside className="flex h-screen w-20 flex-col items-center border-r border-border bg-card py-4 gap-1">
       {/* Logo */}
@@ -61,13 +48,36 @@ export default function CategorySidebar({ active, onSelect, onOpenOrders }: Prop
         })}
       </div>
 
-      <button
-        onClick={onOpenOrders}
-        className="mt-auto mb-4 flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-secondary hover:text-foreground"
-      >
-        <ReceiptText size={22} />
-        Ventas
-      </button>
+      <div className="mt-auto flex flex-col items-center gap-2 mb-4">
+        {!isCashier && (
+          <button
+            onClick={() => navigate("/cocina")}
+            className="flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-orange-500/10 hover:text-orange-600"
+          >
+            <ChefHat size={22} />
+            Cocina
+          </button>
+        )}
+        {logout && isAdmin && (
+          <button
+            onClick={onOpenOrders}
+            className="flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            <ReceiptText size={22} />
+            Ventas
+          </button>
+        )}
+        <button
+          onClick={async () => {
+            await logout();
+            navigate("/login");
+          }}
+          className="flex w-16 flex-col items-center gap-1 rounded-xl py-3 text-[10px] font-semibold uppercase tracking-wide transition-colors text-muted-foreground hover:bg-destructive/10 hover:text-destructive mt-4"
+        >
+          <LogOut size={22} />
+          Salir
+        </button>
+      </div>
     </aside>
   );
 }

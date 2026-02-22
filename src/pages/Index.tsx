@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import CategorySidebar from "@/components/pos/CategorySidebar";
-import ProductGrid from "@/components/pos/ProductGrid";
-import OrderPanel from "@/components/pos/OrderPanel";
-import CustomizationModal from "@/components/pos/CustomizationModal";
-import OrdersHistoryModal from "@/components/pos/OrdersHistoryModal";
+import CategorySidebar from "@/components/pos/category_sidebar";
+import ProductGrid from "@/components/pos/product_grid";
+import OrderPanel from "@/components/pos/order_panel";
+import CustomizationModal from "@/components/pos/customization_modal";
+import OrdersHistoryModal from "@/components/pos/orders_history_modal";
 import type { Category, MenuItem } from "@/data/menu";
 
 const Index = () => {
@@ -21,12 +21,12 @@ const Index = () => {
 
   // Keyboard shortcuts
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "F2") {
-        e.preventDefault();
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "F2") {
+        event.preventDefault();
         searchRef.current?.focus();
       }
-      if (e.key === "Escape") {
+      if (event.key === "Escape") {
         setModalOpen(false);
       }
     };
@@ -36,7 +36,7 @@ const Index = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      <CategorySidebar active={category} onSelect={(c) => { setCategory(c); setSearch(""); }} onOpenOrders={() => setOrdersModalOpen(true)} />
+      <CategorySidebar active={category} onSelect={(category) => { setCategory(category); setSearch(""); }} onOpenOrders={() => setOrdersModalOpen(true)} />
       <ProductGrid
         category={category}
         searchQuery={search}

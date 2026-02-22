@@ -1,0 +1,82 @@
+[
+  {
+    "f": "components\\pos\\customization_modal.tsx",
+    "l": 104
+  },
+  {
+    "f": "components\\pos\\orders_history_modal.tsx",
+    "l": 114
+  },
+  {
+    "f": "components\\pos\\printable_receipt.tsx",
+    "l": 110
+  },
+  {
+    "f": "components\\ui\\alert-dialog.tsx",
+    "l": 105
+  },
+  {
+    "f": "components\\ui\\carousel.tsx",
+    "l": 225
+  },
+  {
+    "f": "components\\ui\\chart.tsx",
+    "l": 304
+  },
+  {
+    "f": "components\\ui\\command.tsx",
+    "l": 133
+  },
+  {
+    "f": "components\\ui\\context-menu.tsx",
+    "l": 179
+  },
+  {
+    "f": "components\\ui\\dropdown-menu.tsx",
+    "l": 180
+  },
+  {
+    "f": "components\\ui\\form.tsx",
+    "l": 130
+  },
+  {
+    "f": "components\\ui\\menubar.tsx",
+    "l": 208
+  },
+  {
+    "f": "components\\ui\\navigation-menu.tsx",
+    "l": 121
+  },
+  {
+    "f": "components\\ui\\select.tsx",
+    "l": 144
+  },
+  {
+    "f": "components\\ui\\sheet.tsx",
+    "l": 108
+  },
+  {
+    "f": "components\\ui\\sidebar.tsx",
+    "l": 638
+  },
+  {
+    "f": "components\\ui\\toast.tsx",
+    "l": 112
+  },
+  {
+    "f": "context\\orders_context.tsx",
+    "l": 107
+  },
+  {
+    "f": "data\\menu.ts",
+    "l": 268
+  },
+  {
+    "f": "hooks\\use-toast.ts",
+    "l": 187
+  },
+  {
+    "f": "pages\\login.tsx",
+    "l": 100
+  }
+]

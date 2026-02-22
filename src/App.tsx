@@ -3,29 +3,37 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CartProvider } from "@/context/CartContext";
-import { OrdersProvider } from "@/context/OrdersContext";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { CartProvider } from "@/context/cart_context";
+import { OrdersProvider } from "@/context/orders_context";
+import { AuthProvider } from "@/context/auth_context";
+import { ProtectedRoute } from "@/components/auth/protected_route";
+import Index from "./pages/index";
+import NotFound from "./pages/not_found";
+import KitchenView from "./pages/kitchen_view";
+import Login from "./pages/login";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
       <CartProvider>
         <OrdersProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+              <Route path="/cocina" element={<ProtectedRoute allowCashier={false}><KitchenView /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </OrdersProvider>
       </CartProvider>
     </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

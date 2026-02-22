@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/context/cart_context";
 import type { MenuItem, CustomizationOption } from "@/data/menu";
-import { cn } from "@/lib/utils";
+import { CustomizationGroup } from "./customization_group";
 
 interface Props {
   item: MenuItem | null;
@@ -21,11 +21,11 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
     if (open) setSelected([]);
   }, [open, item]);
 
-  const toggle = (opt: CustomizationOption) => {
-    setSelected((prev) =>
-      prev.find((o) => o.id === opt.id)
-        ? prev.filter((o) => o.id !== opt.id)
-        : [...prev, opt]
+  const toggle = (option: CustomizationOption) => {
+    setSelected((previousSelected) =>
+      previousSelected.find((selectedOption) => selectedOption.id === option.id)
+        ? previousSelected.filter((selectedOption) => selectedOption.id !== option.id)
+        : [...previousSelected, option]
     );
   };
 
@@ -49,9 +49,9 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
   // Enter to confirm
   useEffect(() => {
     if (!open) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
         handleAdd();
       }
     };
@@ -64,35 +64,6 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
   const removals = item.customizations.filter((c) => c.type === "remove");
   const adds = item.customizations.filter((c) => c.type === "add");
   const upgrades = item.customizations.filter((c) => c.type === "upgrade");
-
-  const renderGroup = (title: string, options: CustomizationOption[]) => {
-    if (options.length === 0) return null;
-    return (
-      <div className="space-y-2">
-        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{title}</h4>
-        {options.map((opt) => {
-          const checked = !!selected.find((o) => o.id === opt.id);
-          return (
-            <label
-              key={opt.id}
-              className={cn(
-                "flex cursor-pointer items-center justify-between rounded-lg border border-border px-3 py-2.5 transition-colors",
-                checked ? "border-primary bg-primary/10" : "hover:bg-secondary"
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <Checkbox checked={checked} onCheckedChange={() => toggle(opt)} />
-                <span className="text-sm font-medium">{opt.label}</span>
-              </div>
-              {opt.price > 0 && (
-                <span className="text-sm font-semibold text-primary">+${opt.price.toFixed(2)}</span>
-              )}
-            </label>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
@@ -113,9 +84,9 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
         </DialogHeader>
 
         <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
-          {renderGroup("Quitar", removals)}
-          {renderGroup("Agregar", adds)}
-          {renderGroup("Mejorar", upgrades)}
+          <CustomizationGroup title="Quitar" options={removals} selected={selected} toggle={toggle} />
+          <CustomizationGroup title="Agregar" options={adds} selected={selected} toggle={toggle} />
+          <CustomizationGroup title="Mejorar" options={upgrades} selected={selected} toggle={toggle} />
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-border mt-2">
