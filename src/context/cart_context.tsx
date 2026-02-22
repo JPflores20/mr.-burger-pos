@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useCallback, type ReactNode } fr
 import type { CustomizationOption } from "@/data/menu";
 
 export interface CartItem {
-  cartId: string; // unique per cart entry
+  cartId: string;
   menuItemId: string;
   name: string;
   basePrice: number;

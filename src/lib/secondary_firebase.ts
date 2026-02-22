@@ -1,6 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -10,11 +8,8 @@ const firebaseConfig = {
   storageBucket: "mrburguer-c5f7d.firebasestorage.app",
   messagingSenderId: "690349800884",
   appId: "1:690349800884:web:a6fd7ae67a5a44924d86e1",
-  measurementId: "G-3XV9G6E3WN"
+  measurementId: "G-3XV9G6E3WN",
 };
 
-const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-export default app;
+const secondaryApp = initializeApp(firebaseConfig, "secondary");
+export const secondaryAuth = getAuth(secondaryApp);

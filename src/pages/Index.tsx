@@ -19,7 +19,6 @@ const Index = () => {
     setModalOpen(true);
   };
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (event.key === "F2") {

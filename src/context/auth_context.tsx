@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
+
+const ADMIN_EMAIL = "pepe.jlfc.16@gmail.com";
 
 interface AuthContextType {
   currentUser: User | null;
@@ -24,11 +27,36 @@ export function useAuth() {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isCashier, setIsCashier] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+
+      if (!user) {
+        setIsAdmin(false);
+        setIsCashier(false);
+        setLoading(false);
+        return;
+      }
+
+      if (user.email === ADMIN_EMAIL) {
+        setIsAdmin(true);
+        setIsCashier(false);
+        setLoading(false);
+        return;
+      }
+
+      setIsAdmin(false);
+      const q = query(
+        collection(db, "cashiers"),
+        where("email", "==", user.email),
+        where("active", "==", true)
+      );
+      const snapshot = await getDocs(q);
+      setIsCashier(!snapshot.empty);
       setLoading(false);
     });
 
@@ -43,16 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const isAdmin = currentUser?.email === "pepe.jlfc.16@gmail.com";
-  const isCashier = currentUser?.email === "julietagomezchii@gmail.com";
-
-  const value = {
-    currentUser,
-    isAdmin,
-    isCashier,
-    loading,
-    logout,
-  };
+  const value = { currentUser, isAdmin, isCashier, loading, logout };
 
   return (
     <AuthContext.Provider value={value}>

@@ -9,7 +9,6 @@ const OrdersContext = createContext<OrdersContextValue | null>(null);
 export function OrdersProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
 
-  // Real-time synchronization with Firestore
   useEffect(() => {
     const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -22,7 +21,7 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
           tax: data.tax,
           total: data.total,
           paymentMethod: data.paymentMethod,
-          timestamp: data.timestamp?.toDate() || new Date(), // Convert from Firestore Timestamp
+          timestamp: data.timestamp?.toDate() || new Date(),
           status: data.status,
         };
       });
@@ -41,14 +40,12 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
       status: "pending",
     };
     
-    // Save to Firestore
     const orderForDb = {
       ...newOrder,
-      timestamp: Timestamp.fromDate(newOrder.timestamp), // Convert to Firestore Timestamp
+      timestamp: Timestamp.fromDate(newOrder.timestamp),
     };
     setDoc(doc(db, "orders", newId), orderForDb).catch(console.error);
     
-    // Also update local state immediately for snappy UI
     setOrders((previousOrders) => [newOrder, ...previousOrders].sort((a,b) => b.timestamp.getTime() - a.timestamp.getTime()));
     return newOrder;
   };

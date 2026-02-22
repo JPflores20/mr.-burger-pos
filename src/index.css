@@ -4,44 +4,44 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 36 33% 95%;
+    --background:          222 47%  6%; /* Azul marino noche (casi negro)   = #060D1A */
+    --foreground:           36 33% 95%; /* Blanco crema cálido               = #F6F3EE */
 
-    --card: 222 40% 8%;
-    --card-foreground: 36 33% 95%;
+    --card:                222 40%  8%; /* Azul marino oscuro (tarjetas)     = #0B1221 */
+    --card-foreground:      36 33% 95%; /* Blanco crema cálido               = #F6F3EE */
 
-    --popover: 222 40% 10%;
-    --popover-foreground: 36 33% 95%;
+    --popover:             222 40% 10%; /* Azul marino (popovers)            = #0E1729 */
+    --popover-foreground:   36 33% 95%; /* Blanco crema cálido               = #F6F3EE */
 
-    --primary: 27 100% 48%;
-    --primary-foreground: 0 0% 100%;
+    --primary:              27 100% 48%; /* Naranja intenso (color principal) = #F57600 */
+    --primary-foreground:    0   0% 100%; /* Blanco puro                      = #FFFFFF */
 
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 36 33% 95%;
+    --secondary:           222 30% 14%; /* Azul grisáceo oscuro (fondos)     = #172133 */
+    --secondary-foreground: 36 33% 95%; /* Blanco crema cálido               = #F6F3EE */
 
-    --muted: 222 25% 12%;
-    --muted-foreground: 215 15% 55%;
+    --muted:               222 25% 12%; /* Azul-gris muy oscuro (apagado)    = #141D2B */
+    --muted-foreground:    215 15% 55%; /* Gris azulado medio (texto suave)  = #7E8FA0 */
 
-    --accent: 36 100% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent:               36 100% 50%; /* Ámbar brillante (acento)         = #FF9900 */
+    --accent-foreground:   222 47%  6%; /* Azul marino noche                 = #060D1A */
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive:           0 72% 51%; /* Rojo error/eliminar               = #DC2626 */
+    --destructive-foreground: 0  0% 100%; /* Blanco puro                     = #FFFFFF */
 
-    --border: 222 20% 16%;
-    --input: 222 20% 16%;
-    --ring: 27 100% 48%;
+    --border:              222 20% 16%; /* Azul oscuro bordes                = #1D2535 */
+    --input:               222 20% 16%; /* Azul oscuro inputs                = #1D2535 */
+    --ring:                 27 100% 48%; /* Naranja intenso (focus ring)     = #F57600 */
 
     --radius: 0.625rem;
 
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 36 33% 95%;
-    --sidebar-primary: 27 100% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 30% 12%;
-    --sidebar-accent-foreground: 36 33% 95%;
-    --sidebar-border: 222 20% 16%;
-    --sidebar-ring: 27 100% 48%;
+    --sidebar-background:  222 47%  5%; /* Azul marino noche profundo        = #05091A */
+    --sidebar-foreground:   36 33% 95%; /* Blanco crema cálido               = #F6F3EE */
+    --sidebar-primary:      27 100% 48%; /* Naranja intenso                  = #F57600 */
+    --sidebar-primary-foreground: 0 0% 100%; /* Blanco puro                 = #FFFFFF */
+    --sidebar-accent:      222 30% 12%; /* Azul grisáceo muy oscuro          = #131D2B */
+    --sidebar-accent-foreground: 36 33% 95%; /* Blanco crema cálido          = #F6F3EE */
+    --sidebar-border:      222 20% 16%; /* Azul oscuro bordes                = #1D2535 */
+    --sidebar-ring:         27 100% 48%; /* Naranja intenso                  = #F57600 */
   }
 }
 
@@ -52,11 +52,14 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 }
 
-/* Custom scrollbar for the POS */
 ::-webkit-scrollbar {
   width: 6px;
 }

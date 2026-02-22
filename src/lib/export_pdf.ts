@@ -17,7 +17,6 @@ export const exportOrdersToPDF = (orders: Order[], dailyTotal: number) => {
       minute: "2-digit",
     });
 
-    // Header
     doc.setFontSize(20);
     doc.text("Corte de Caja - Mr. Burger", 14, 22);
 
@@ -43,16 +42,14 @@ export const exportOrdersToPDF = (orders: Order[], dailyTotal: number) => {
       head: [["ID Orden", "Hora", "Método de Pago", "Total"]],
       body: tableData,
       theme: "striped",
-      headStyles: { fillColor: [220, 38, 38] }, // Red color matching theme roughly
+      headStyles: { fillColor: [220, 38, 38] },
     });
 
-    // Total Line
     const finalY = (doc as any).lastAutoTable.finalY || 35;
     doc.setFontSize(14);
     doc.setTextColor(0);
     doc.text(`Total Generado: $${dailyTotal.toFixed(2)}`, 14, finalY + 15);
 
-    // Save PDF
     const filenameDate = new Date().toISOString().split("T")[0];
     doc.save(`Corte_Ventas_MrBurger_${filenameDate}.pdf`);
     toast.success("PDF generado correctamente");

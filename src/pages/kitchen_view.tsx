@@ -6,7 +6,6 @@ import { useOrders } from "@/context/orders_context";
 import { Button } from "@/components/ui/button";
 import { KitchenOrderCard } from "@/components/pos/kitchen_order_card";
 
-// Hook to force re-render every minute to update "... minutes ago" component
 function useForceUpdate() {
   const [value, setValue] = useState(0); 
   useEffect(() => {

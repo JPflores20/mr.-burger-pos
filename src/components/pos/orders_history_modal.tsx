@@ -20,7 +20,6 @@ export default function OrdersHistoryModal({ open, onClose }: Props) {
   const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
   const [pin, setPin] = useState("");
 
-  // Clear pin on open/close
   useEffect(() => {
     if (orderToDelete && !isAdmin) {
       setPin("");
@@ -46,7 +45,6 @@ export default function OrdersHistoryModal({ open, onClose }: Props) {
        removeOrder(id);
        toast.success("Venta eliminada por administrador");
     } else {
-       // Conceptually this won't be hit if we hide the button, but keeping for safety
        setOrderToDelete(id);
     }
   };

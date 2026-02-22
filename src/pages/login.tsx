@@ -19,8 +19,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Removed toast.success so the user just transitions seamlessly
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userName = userCredential.user.displayName ?? userCredential.user.email ?? "Usuario";
+      toast.success(`¡Bienvenido, ${userName}!`);
       navigate("/");
     } catch (error: any) {
       console.error(error);

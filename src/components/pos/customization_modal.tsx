@@ -16,7 +16,6 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
   const [selected, setSelected] = useState<CustomizationOption[]>([]);
   const { addItem } = useCart();
 
-  // Reset on open
   useEffect(() => {
     if (open) setSelected([]);
   }, [open, item]);
@@ -46,7 +45,6 @@ export default function CustomizationModal({ item, open, onClose }: Props) {
     onClose();
   }, [item, selected, addItem, onClose]);
 
-  // Enter to confirm
   useEffect(() => {
     if (!open) return;
     const handler = (event: KeyboardEvent) => {
